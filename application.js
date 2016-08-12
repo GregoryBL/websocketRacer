@@ -60,26 +60,20 @@ function createRow(name, length) {
 
 
 function keyListener(event) {
-  var number = event.which - 48;
-  console.log(number);
-  var $row = $( ".key_" + String(number) );
-  console.log($row)
-  if ($row.length > 0) {
-    var name = $row.attr("id").replace("_strip", "");
-    console.log(name);
-    incrementPlayerPosition(name);
-    if (finished(name)) {
-      $(document).off('keyup');
-      $('body').append('<h1>' + name + ' wins!</h1>');
-      $('body').append('<button id="restart">Restart</button>');
-      $('#restart').on("click", function() {
-        createBoard(["greg", "leul", "alex"], 10);
-        $('#restart').off("click");
-        $('#restart, h1').remove();
-        $(document).on('keyup', keyListener);
-      })
+  if (event.which == 192) {
 
-    }
+    socket.send("Greg");
+      // $(document).off('keyup');
+      // $('body').append('<h1>' + name + ' wins!</h1>');
+      // $('body').append('<button id="restart">Restart</button>');
+      // $('#restart').on("click", function() {
+      //   createBoard(["greg", "leul", "alex"], 10);
+      //   $('#restart').off("click");
+      //   $('#restart, h1').remove();
+      //   $(document).on('keyup', keyListener);
+      // })
+
+    // }
   }
 }
 
@@ -90,13 +84,13 @@ function addMessage(msg) {
 var socket;
 var host;
 
-host = "ws://localhost:8080";
+host = "ws://192.168.2.48:8080";
 
 function connect() {
   try {
     socket = new WebSocket(host);
 
-    addMessage("Socket State: " + socket.readyState);
+    // addMessage("Socket State: " + socket.readyState);
 
     socket.onopen = function() {
       addMessage("Socket Status: " + socket.readyState + " (open)");
@@ -116,45 +110,45 @@ function connect() {
   }
 }
 
-function send() {
-  var text = $("#message").val();
-  if (text == '') {
-    addMessage("Please Enter a Message");
-    return;
-  }
+// function send() {
+//   var text = $("#message").val();
+//   if (text == '') {
+//     addMessage("Please Enter a Message");
+//     return;
+//   }
 
-  try {
-    socket.send(text);
-    addMessage("Sent: " + text)
-  } catch(exception) {
-    addMessage("Failed To Send")
-  }
+//   try {
+//     socket.send(text);
+//     addMessage("Sent: " + text)
+//   } catch(exception) {
+//     addMessage("Failed To Send")
+//   }
 
-  $("#message").val('');
-}
+//   $("#message").val('');
+// }
 
-$('#message').keypress(function(event) {
-  if (event.keyCode == '13') { send(); }
-});
+// $('#message').keypress(function(event) {
+//   if (event.keyCode == '13') { send(); }
+// });
 
-$("#disconnect").click(function() {
-  socket.close()
-});
+// $("#disconnect").click(function() {
+//   socket.close()
+// });
 
 $(function() {
-  createBoard(["greg", "leul", "alex"], 10);
+  // createBoard(["greg", "leul", "alex"], 10);
 
   $(document).on('keyup', keyListener);
 
   connect();
 
-  $('#message').on("keypress", function(event) {
-    if (event.keyCode == '13') { send(); }
-  });
+  // $('#message').on("keypress", function(event) {
+  //   if (event.keyCode == '13') { send(); }
+  // });
 
-  $("#disconnect").on("click", function() {
-    socket.close()
-  });
+  // $("#disconnect").on("click", function() {
+  //   socket.close()
+  // });
 })
 
 

@@ -17,7 +17,7 @@ EM.run {
   end
   @channel = EM::Channel.new
 
-  EM::WebSocket.run(:host => "localhost", :port => 8080) do |ws|
+  EM::WebSocket.run(:host => "192.168.2.48", :port => 8080) do |ws|
     ws.onopen { |handshake|
       puts "WebSocket connection open"
 
@@ -27,7 +27,7 @@ EM.run {
       # path, query_string, origin, headers
 
       # Publish message to the client
-      ws.send "Hello Client, you connected to #{handshake.path}"
+      # ws.send "Hello Client, you connected to #{handshake.path}"
 
       ws.onclose {
         puts "Connection closed"
