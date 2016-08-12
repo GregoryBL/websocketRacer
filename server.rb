@@ -13,8 +13,16 @@ EM.run {
       $players_hash[player_name] = $players_hash[player_name] + 1
     end
 
-    # CHECK IF SOMEONE WON
+    $players_hash.each { |player, _| $players_hash[player] = 1 } if didAnyoneWin?
   end
+
+  def didAnyoneWin?
+    $players_hash.each do |player, value|
+      return true if value >= $length
+    end
+    return false
+  end
+
   @channel = EM::Channel.new
 
   EM::WebSocket.run(:host => "192.168.2.48", :port => 8080) do |ws|
@@ -35,6 +43,7 @@ EM.run {
       }
 
       ws.onmessage { |msg|
+        p msg
         create_or_move_player(msg)
         @channel.push({players_hash: $players_hash, length: $length}.to_json)
       }
