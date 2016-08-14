@@ -25,7 +25,7 @@ EM.run {
 
   @channel = EM::Channel.new
 
-  EM::WebSocket.run(:host => "192.168.2.48", :port => 8080) do |ws|
+  EM::WebSocket.run(:host => "websocketracer.herokuapp.com", :port => 8080) do |ws|
     ws.onopen { |handshake|
       puts "WebSocket connection open"
 

@@ -84,7 +84,7 @@ function addMessage(msg) {
 var socket;
 var host;
 
-host = "ws://192.168.2.48:8080";
+host = "ws://websocketracer.herokuapp.com:8080";
 
 function connect() {
   try {
