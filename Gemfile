@@ -6,9 +6,10 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 
 gem 'thin'
+gem 'rack', '<2.0'
 
 gem 'rake'
 
 gem 'shotgun'
 
-gem 'em-websocket'
+gem 'faye-websocket'
