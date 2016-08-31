@@ -27,7 +27,7 @@ var host;
 
 
 function connect() {
-  host = "ws://" + window.document.location.host + "/";
+  host = "wss://" + window.document.location.host + "/";
   try {
     socket = new WebSocket(host);
 
