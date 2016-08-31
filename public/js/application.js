@@ -33,6 +33,7 @@ function connect() {
 
     socket.onopen = function() {
       addMessage("Socket Status: " + socket.readyState + " (open)");
+      socket.send(playerName)
     }
 
     socket.onclose = function() {
