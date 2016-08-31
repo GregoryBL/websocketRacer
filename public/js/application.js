@@ -1,96 +1,35 @@
-function setCurrentState(playersHash, length) {
-  var players = Object.keys(playersHash);
-  createBoard(players, length);
+var playerName;
 
-  for (player in playersHash) {
-    updatePlayerPosition(player, playersHash[player]);
-  }
-
-}
-// function incrementPlayerPosition(playerName) {
-//   var pos = getPlayerPosition(playerName);
-//   updatePlayerPosition(playerName, pos + 1);
-// }
-
-// function getPlayerPosition(playerName) {
-//   var stripName = '#' + playerName + '_strip';
-
-//   return $(stripName).children(".active").index() + 1
-// }
-
-function updatePlayerPosition(playerName, position) {
-  var stripName = '#' + playerName + '_strip';
-
-  var $playerRow = $(stripName);
-  $playerRow.children().removeClass("active");
-
-  var stringToUpdate = ':nth-child(' + String(position) + ')';
-  $playerRow.children( stringToUpdate ).addClass("active");
-}
-
-function createBoard(playersArray, length) {
-  var $table = $('table#racer_table');
-  var rows = playersArray.length;
-
-  $table.children().remove();
-
-  for (var i=0; i<rows; i++) {
-    $table.append( createRow(playersArray[i], length) );
-    $table.children().last().addClass( "key_" + String( i + 1 ) );
-  }
-}
-
-function createRow(name, length) {
-  returnString = "<tr id='" + name + "_strip'><td class='active'></td>"
-  for (var j=0; j<(length-1); j++) {
-    returnString = returnString + "<td></td>";
-  }
-  return returnString + "</tr>";
-}
-
-// function finished(player) {
-//   return getPlayerPosition(player) === getLength(player)
-// }
-
-// function getLength(player) {
-//   var stripName = '#' + player + '_strip';
-//   return $(stripName).children().last().index() + 1
-// }
-
-
+$(function() {
+  $("#login-form").on("submit", setup)
+})
 
 function keyListener(event) {
   if (event.which == 192) {
-
-    socket.send("Greg");
-      // $(document).off('keyup');
-      // $('body').append('<h1>' + name + ' wins!</h1>');
-      // $('body').append('<button id="restart">Restart</button>');
-      // $('#restart').on("click", function() {
-      //   createBoard(["greg", "leul", "alex"], 10);
-      //   $('#restart').off("click");
-      //   $('#restart, h1').remove();
-      //   $(document).on('keyup', keyListener);
-      // })
-
-    // }
+    console.log("sending")
+    socket.send(playerName);
   }
 }
 
-function addMessage(msg) {
-  $("#chat-log").append("" + msg + "");
+function setup() {
+  event.preventDefault()
+  console.log("setup called")
+
+  playerName = $("#player-name").val();
+  $(document).on('keyup', keyListener);
+  $(this).hide();
+
+  connect();
 }
 
 var socket;
 var host;
 
-host = "ws://websocketracer.herokuapp.com:43435";
 
 function connect() {
+  host = "ws://" + window.document.location.host + "/";
   try {
     socket = new WebSocket(host);
-
-    // addMessage("Socket State: " + socket.readyState);
 
     socket.onopen = function() {
       addMessage("Socket Status: " + socket.readyState + " (open)");
@@ -110,49 +49,6 @@ function connect() {
   }
 }
 
-// function send() {
-//   var text = $("#message").val();
-//   if (text == '') {
-//     addMessage("Please Enter a Message");
-//     return;
-//   }
-
-//   try {
-//     socket.send(text);
-//     addMessage("Sent: " + text)
-//   } catch(exception) {
-//     addMessage("Failed To Send")
-//   }
-
-//   $("#message").val('');
-// }
-
-// $('#message').keypress(function(event) {
-//   if (event.keyCode == '13') { send(); }
-// });
-
-// $("#disconnect").click(function() {
-//   socket.close()
-// });
-
-$(function() {
-  // createBoard(["greg", "leul", "alex"], 10);
-
-  $(document).on('keyup', keyListener);
-
-  connect();
-
-  // $('#message').on("keypress", function(event) {
-  //   if (event.keyCode == '13') { send(); }
-  // });
-
-  // $("#disconnect").on("click", function() {
-  //   socket.close()
-  // });
-})
-
-
-
-
-
-
+function addMessage(msg) {
+  $("#chat-log").append("" + msg + "");
+}
