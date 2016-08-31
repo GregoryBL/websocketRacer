@@ -14,4 +14,4 @@ use Backend
 
 run Sinatra::Application
 
-# Thin::Server.start '0.0.0.0', $PORT
+# Thin::Server.start $PORT
